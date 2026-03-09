@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cisco Password Command Trainer</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #141b34;
+      --panel-2: #1b2547;
+      --line: #2d3a6b;
+      --text: #edf2ff;
+      --muted: #aab8e6;
+      --accent: #69a3ff;
+      --ok: #39d98a;
+      --warn: #ffcc66;
+      --bad: #ff7b7b;
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #0a0f1d, #0e1835 45%, #13224d);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 18px 42px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(105,163,255,.18), rgba(57,217,138,.08));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 26px;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.7rem, 3vw, 2.6rem);
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 800px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: rgba(20, 27, 52, .94);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .card-head {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+    }
+
+    .card-head h2 {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    .card-body {
+      padding: 18px;
+    }
+
+    .lesson-box {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    .lesson-box h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    code, pre {
+      font-family: Consolas, Monaco, monospace;
+    }
+
+    pre {
+      margin: 10px 0 0;
+      background: #0b1125;
+      border: 1px solid #27345f;
+      border-radius: 12px;
+      padding: 14px;
+      white-space: pre-wrap;
+      color: #dce8ff;
+      line-height: 1.55;
+      min-height: 92px;
+    }
+
+    .scenario {
+      background: #0d1430;
+      border: 1px solid #25335f;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 170px;
+      resize: vertical;
+      background: #091022;
+      color: var(--text);
+      border: 1px solid #314170;
+      border-radius: 14px;
+      padding: 14px;
+      outline: none;
+      font-size: 0.98rem;
+      line-height: 1.6;
+    }
+
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(105,163,255,.15);
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-weight: 700;
+      cursor: pointer;
+      color: white;
+      transition: .18s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+    .primary { background: var(--accent); }
+    .secondary { background: #33457d; }
+    .success { background: #24885a; }
+
+    .status {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #0d1430;
+      line-height: 1.6;
+      min-height: 66px;
+    }
+
+    .status.good {
+      border-color: rgba(57,217,138,.45);
+      background: rgba(57,217,138,.08);
+    }
+
+    .status.bad {
+      border-color: rgba(255,123,123,.45);
+      background: rgba(255,123,123,.08);
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .chip {
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: #12214a;
+      border: 1px solid #30457e;
+      color: #d8e4ff;
+      font-size: .9rem;
+    }
+
+    .scoreboard {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .stat {
+      background: #0d1430;
+      border: 1px solid #24325f;
+      border-radius: 14px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .stat .num {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .help-list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .footer-note {
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: .92rem;
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>Cisco Password Command Trainer</h1>
+      <p>
+        This training page helps you practice the basic Cisco router commands for adding an enable secret,
+        console password, and VTY password. It is built like a lightweight lab simulator so you can drill the
+        command flow until it becomes second nature.
+      </p>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <div class="card-head"><h2>Lesson and Reference</h2></div>
+        <div class="card-body">
+          <div class="lesson-box">
+            <h3>Standard password setup</h3>
+            <pre>conf t
+enable secret cisco
+line con 0
+password cisco
+login
+line vty 0 4
+password cisco
+login
+service password-encryption
+end
+wr</pre>
+          </div>
+
+          <div class="lesson-box">
+            <h3>What each part does</h3>
+            <div class="chips">
+              <span class="chip">enable secret = admin mode password</span>
+              <span class="chip">line con 0 = console line</span>
+              <span class="chip">password = sets login password</span>
+              <span class="chip">login = forces password prompt</span>
+              <span class="chip">line vty 0 4 = telnet lines</span>
+              <span class="chip">wr = save config</span>
+            </div>
+          </div>
+
+          <div class="lesson-box">
+            <h3>Shortcuts</h3>
+            <pre>conf t
+line con 0
+pass cisco
+line vty 0 4
+sh run | i pass
+sh ip int br</pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><h2>Practice Lab</h2></div>
+        <div class="card-body">
+          <div class="scenario" id="scenario"></div>
+          <textarea id="answer" spellcheck="false" placeholder="Type the Cisco commands here..."></textarea>
+          <div class="btn-row">
+            <button class="primary" id="checkBtn">Check Answer</button>
+            <button class="secondary" id="hintBtn">Show Hint</button>
+            <button class="success" id="nextBtn">Next Challenge</button>
+          </div>
+          <div class="status" id="status">Start with Challenge 1 and type the commands in order.</div>
+          <div class="scoreboard">
+            <div class="stat">
+              <div class="num" id="correctCount">0</div>
+              <div>Correct</div>
+            </div>
+            <div class="stat">
+              <div class="num" id="attemptCount">0</div>
+              <div>Attempts</div>
+            </div>
+            <div class="stat">
+              <div class="num" id="challengeNum">1</div>
+              <div>Challenge</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="card" style="margin-top:20px;">
+      <div class="card-head"><h2>Trainer Notes</h2></div>
+      <div class="card-body">
+        <ul class="help-list">
+          <li>Type one command per line, just like in Packet Tracer.</li>
+          <li>The checker accepts common shortcuts like <code>conf t</code> and <code>pass</code>.</li>
+          <li>The sequence matters because Cisco CLI follows command modes.</li>
+          <li>Use this page as a rehearsal deck before moving into your actual router lab.</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="footer-note">Built as a compact skills-enablement website for Cisco command practice.</div>
+  </div>
+
+  <script>
+    const scenarios = [
+      {
+        text: 'Challenge 1: Add an enable secret password named cisco, then set the console password to cisco and make the router ask for it during console login.',
+        required: ['conf t', 'enable secret cisco', 'line con 0', 'password cisco', 'login']
+      },
+      {
+        text: 'Challenge 2: Configure only the Telnet lines so remote users must enter the password cisco.',
+        required: ['conf t', 'line vty 0 4', 'password cisco', 'login']
+      },
+      {
+        text: 'Challenge 3: Do the full password hardening flow: enable secret, console password, VTY password, encrypt passwords, and save.',
+        required: ['conf t', 'enable secret cisco', 'line con 0', 'password cisco', 'login', 'line vty 0 4', 'password cisco', 'login', 'service password-encryption', 'end', 'wr']
+      },
+      {
+        text: 'Challenge 4: Your teacher wants you to use admin instead of cisco for console and VTY, but keep cisco as the enable secret. Add both and save.',
+        required: ['conf t', 'enable secret cisco', 'line con 0', 'password admin', 'login', 'line vty 0 4', 'password admin', 'login', 'end', 'wr']
+      }
+    ];
+
+    let current = 0;
+    let correct = 0;
+    let attempts = 0;
+
+    const scenarioEl = document.getElementById('scenario');
+    const answerEl = document.getElementById('answer');
+    const statusEl = document.getElementById('status');
+    const correctCountEl = document.getElementById('correctCount');
+    const attemptCountEl = document.getElementById('attemptCount');
+    const challengeNumEl = document.getElementById('challengeNum');
+
+    function normalize(line) {
+      return line
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, ' ')
+        .replace(/^configure terminal$/, 'conf t')
+        .replace(/^pass /, 'password ')
+        .replace(/^write memory$/, 'wr');
+    }
+
+    function loadScenario() {
+      scenarioEl.textContent = scenarios[current].text;
+      challengeNumEl.textContent = current + 1;
+      answerEl.value = '';
+      statusEl.className = 'status';
+      statusEl.textContent = 'Enter the commands in order, then click Check Answer.';
+    }
+
+    function checkAnswer() {
+      attempts++;
+      attemptCountEl.textContent = attempts;
+
+      const inputLines = answerEl.value
+        .split('\n')
+        .map(normalize)
+        .filter(Boolean);
+
+      const required = scenarios[current].required.map(normalize);
+
+      const missing = required.filter(cmd => !inputLines.includes(cmd));
+      const wrongOrder = required.some((cmd, idx) => inputLines[idx] !== cmd);
+
+      if (missing.length === 0 && !wrongOrder) {
+        correct++;
+        correctCountEl.textContent = correct;
+        statusEl.className = 'status good';
+        statusEl.innerHTML = '<strong>Correct.</strong> The command stack is in the right order and aligned with Cisco mode transitions.';
+      } else {
+        statusEl.className = 'status bad';
+        let msg = '<strong>Not quite yet.</strong> ';
+        if (missing.length) {
+          msg += 'Missing: <code>' + missing.join('</code>, <code>') + '</code>. ';
+        }
+        if (wrongOrder) {
+          msg += 'Some commands are out of order.';
+        }
+        statusEl.innerHTML = msg;
+      }
+    }
+
+    function showHint() {
+      const s = scenarios[current];
+      statusEl.className = 'status';
+      statusEl.innerHTML = '<strong>Hint:</strong> Start with <code>' + s.required[0] + '</code> and follow the proper command mode flow. Total core commands in this challenge: <strong>' + s.required.length + '</strong>.';
+    }
+
+    function nextChallenge() {
+      current = (current + 1) % scenarios.length;
+      loadScenario();
+    }
+
+    document.getElementById('checkBtn').addEventListener('click', checkAnswer);
+    document.getElementById('hintBtn').addEventListener('click', showHint);
+    document.getElementById('nextBtn').addEventListener('click', nextChallenge);
+
+    loadScenario();
+  </script>
+</body>
+</html>
