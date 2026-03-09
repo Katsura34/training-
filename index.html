@@ -3,305 +3,310 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cisco CLI Password Trainer</title>
+  <title>Cisco Password Command Trainer</title>
   <style>
-    :root{
-      --bg:#e9edf3;
-      --panel:#ffffff;
-      --line:#cfd6df;
-      --text:#111827;
-      --muted:#5f6b7a;
-      --terminal:#ffffff;
-      --terminal-line:#111111;
-      --accent:#2563eb;
-      --ok:#15803d;
-      --bad:#b91c1c;
-      --warn:#a16207;
-      --shadow:0 20px 45px rgba(0,0,0,.12);
-      --radius:16px;
+    :root {
+      --bg: #0b1020;
+      --panel: #141b34;
+      --panel-2: #1b2547;
+      --line: #2d3a6b;
+      --text: #edf2ff;
+      --muted: #aab8e6;
+      --accent: #69a3ff;
+      --ok: #39d98a;
+      --warn: #ffcc66;
+      --bad: #ff7b7b;
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --radius: 18px;
     }
 
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:Arial, Helvetica, sans-serif;
-      background:linear-gradient(180deg,#eef2f7,#dde5ef);
-      color:var(--text);
-      min-height:100vh;
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #0a0f1d, #0e1835 45%, #13224d);
+      color: var(--text);
+      min-height: 100vh;
     }
 
-    .wrap{
-      max-width:1200px;
-      margin:0 auto;
-      padding:24px 16px 40px;
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 18px 42px;
     }
 
-    .hero{
-      background:var(--panel);
-      border:1px solid var(--line);
-      border-radius:22px;
-      padding:22px;
-      box-shadow:var(--shadow);
-      margin-bottom:18px;
+    .hero {
+      background: linear-gradient(135deg, rgba(105,163,255,.18), rgba(57,217,138,.08));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 26px;
+      margin-bottom: 22px;
     }
 
-    .hero h1{
-      margin:0 0 8px;
-      font-size:clamp(1.5rem,3vw,2.3rem);
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.7rem, 3vw, 2.6rem);
     }
 
-    .hero p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.6;
-      max-width:860px;
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 800px;
     }
 
-    .layout{
-      display:grid;
-      grid-template-columns:340px 1fr;
-      gap:18px;
+    .grid {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 20px;
     }
 
-    .card{
-      background:var(--panel);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      overflow:hidden;
+    .card {
+      background: rgba(20, 27, 52, .94);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
     }
 
-    .card-head{
-      padding:15px 18px;
-      border-bottom:1px solid var(--line);
-      font-weight:700;
-      background:#f8fafc;
+    .card-head {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
     }
 
-    .card-body{
-      padding:18px;
+    .card-head h2 {
+      margin: 0;
+      font-size: 1.05rem;
     }
 
-    .scenario{
-      background:#f8fafc;
-      border:1px solid var(--line);
-      border-radius:12px;
-      padding:14px;
-      line-height:1.65;
-      color:#334155;
-      margin-bottom:14px;
+    .card-body {
+      padding: 18px;
     }
 
-    .chip-list{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-bottom:16px;
+    .lesson-box {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 14px;
     }
 
-    .chip{
-      border:1px solid #c9d5e4;
-      background:#f1f5f9;
-      color:#334155;
-      padding:7px 10px;
-      border-radius:999px;
-      font-size:.9rem;
+    .lesson-box h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
     }
 
-    .btn-row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:14px;
+    code, pre {
+      font-family: Consolas, Monaco, monospace;
     }
 
-    button{
-      border:0;
-      border-radius:12px;
-      padding:11px 14px;
-      font-weight:700;
-      cursor:pointer;
-      transition:.18s ease;
+    pre {
+      margin: 10px 0 0;
+      background: #0b1125;
+      border: 1px solid #27345f;
+      border-radius: 12px;
+      padding: 14px;
+      white-space: pre-wrap;
+      color: #dce8ff;
+      line-height: 1.55;
+      min-height: 92px;
     }
 
-    button:hover{transform:translateY(-1px)}
-    .primary{background:var(--accent);color:#fff}
-    .secondary{background:#334155;color:#fff}
-    .success{background:var(--ok);color:#fff}
-    .danger{background:#ef4444;color:#fff}
-
-    .stats{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:10px;
-      margin-top:16px;
+    .scenario {
+      background: #0d1430;
+      border: 1px solid #25335f;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 14px;
+      color: var(--muted);
+      line-height: 1.6;
     }
 
-    .stat{
-      background:#f8fafc;
-      border:1px solid var(--line);
-      border-radius:12px;
-      text-align:center;
-      padding:12px;
+    textarea {
+      width: 100%;
+      min-height: 170px;
+      resize: vertical;
+      background: #091022;
+      color: var(--text);
+      border: 1px solid #314170;
+      border-radius: 14px;
+      padding: 14px;
+      outline: none;
+      font-size: 0.98rem;
+      line-height: 1.6;
     }
 
-    .stat .num{
-      font-size:1.4rem;
-      font-weight:800;
-      margin-bottom:4px;
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(105,163,255,.15);
     }
 
-    .help{
-      margin:0;
-      padding-left:18px;
-      color:var(--muted);
-      line-height:1.7;
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
     }
 
-    .terminal-wrap{
-      background:#dbe4ee;
-      border:1px solid #c0cad6;
-      border-radius:18px;
-      padding:16px;
+    button {
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-weight: 700;
+      cursor: pointer;
+      color: white;
+      transition: .18s ease;
     }
 
-    .terminal-top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:12px;
+    button:hover { transform: translateY(-1px); }
+    .primary { background: var(--accent); }
+    .secondary { background: #33457d; }
+    .success { background: #24885a; }
+
+    .status {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #0d1430;
+      line-height: 1.6;
+      min-height: 66px;
     }
 
-    .window-dots{
-      display:flex;
-      gap:8px;
+    .status.good {
+      border-color: rgba(57,217,138,.45);
+      background: rgba(57,217,138,.08);
     }
 
-    .dot{
-      width:12px;
-      height:12px;
-      border-radius:50%;
-      background:#94a3b8;
+    .status.bad {
+      border-color: rgba(255,123,123,.45);
+      background: rgba(255,123,123,.08);
     }
 
-    .terminal-label{
-      color:#334155;
-      font-size:.92rem;
-      font-weight:700;
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
     }
 
-    .terminal{
-      background:var(--terminal);
-      border:1px solid #bfc7d3;
-      border-radius:12px;
-      min-height:560px;
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.7);
-      display:flex;
-      flex-direction:column;
-      overflow:hidden;
+    .chip {
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: #12214a;
+      border: 1px solid #30457e;
+      color: #d8e4ff;
+      font-size: .9rem;
     }
 
-    .screen{
-      flex:1;
-      padding:16px;
-      overflow:auto;
-      font-family:"Courier New", Consolas, monospace;
-      font-size:18px;
-      line-height:1.45;
-      color:var(--terminal-line);
-      white-space:pre-wrap;
-      word-break:break-word;
+    .scoreboard {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 12px;
     }
 
-    .input-bar{
-      border-top:1px solid #d4dbe3;
-      background:#f8fafc;
-      padding:10px 12px;
-      display:flex;
-      gap:10px;
-      align-items:center;
+    .stat {
+      background: #0d1430;
+      border: 1px solid #24325f;
+      border-radius: 14px;
+      padding: 14px;
+      text-align: center;
     }
 
-    .prompt{
-      font-family:"Courier New", Consolas, monospace;
-      font-size:18px;
-      white-space:nowrap;
-      color:#111827;
+    .stat .num {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 4px;
     }
 
-    .cli-input{
-      flex:1;
-      border:0;
-      outline:none;
-      background:transparent;
-      font-family:"Courier New", Consolas, monospace;
-      font-size:18px;
-      color:#111827;
+    .help-list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.7;
     }
 
-    .status-box{
-      margin-top:14px;
-      padding:12px 14px;
-      border-radius:12px;
-      background:#f8fafc;
-      border:1px solid var(--line);
-      line-height:1.6;
+    .footer-note {
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: .92rem;
+      text-align: center;
     }
 
-    .status-box.good{background:#f0fdf4;border-color:#86efac;color:#166534}
-    .status-box.bad{background:#fef2f2;border-color:#fca5a5;color:#991b1b}
-    .status-box.warn{background:#fffbeb;border-color:#fcd34d;color:#92400e}
-
-    code{
-      font-family:"Courier New", Consolas, monospace;
-      background:#eef2f7;
-      border:1px solid #d5dde8;
-      border-radius:6px;
-      padding:1px 5px;
-    }
-
-    @media (max-width: 980px){
-      .layout{grid-template-columns:1fr}
-      .terminal{min-height:480px}
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
   <div class="wrap">
     <section class="hero">
-      <h1>Cisco CLI Password Trainer</h1>
+      <h1>Cisco Password Command Trainer</h1>
       <p>
-        This version is modeled after the plain Cisco command line window you showed. It focuses on command flow,
-        prompt changes, and repetition-based practice so you can internalize the exact password sequence used in lab work.
+        This training page helps you practice the basic Cisco router commands for adding an enable secret,
+        console password, and VTY password. It is built like a lightweight lab simulator so you can drill the
+        command flow until it becomes second nature.
       </p>
     </section>
 
-    <div class="layout">
-      <aside class="card">
-        <div class="card-head">Training Control Panel</div>
+    <div class="grid">
+      <section class="card">
+        <div class="card-head"><h2>Lesson and Reference</h2></div>
+        <div class="card-body">
+          <div class="lesson-box">
+            <h3>Standard password setup</h3>
+            <pre>conf t
+enable secret cisco
+line con 0
+password cisco
+login
+line vty 0 4
+password cisco
+login
+service password-encryption
+end
+wr</pre>
+          </div>
+
+          <div class="lesson-box">
+            <h3>What each part does</h3>
+            <div class="chips">
+              <span class="chip">enable secret = admin mode password</span>
+              <span class="chip">line con 0 = console line</span>
+              <span class="chip">password = sets login password</span>
+              <span class="chip">login = forces password prompt</span>
+              <span class="chip">line vty 0 4 = telnet lines</span>
+              <span class="chip">wr = save config</span>
+            </div>
+          </div>
+
+          <div class="lesson-box">
+            <h3>Shortcuts</h3>
+            <pre>conf t
+line con 0
+pass cisco
+line vty 0 4
+sh run | i pass
+sh ip int br</pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><h2>Practice Lab</h2></div>
         <div class="card-body">
           <div class="scenario" id="scenario"></div>
-
-          <div class="chip-list">
-            <span class="chip">CLI-style practice</span>
-            <span class="chip">Prompt changes</span>
-            <span class="chip">Mode-based commands</span>
-            <span class="chip">Password drill</span>
-          </div>
-
+          <textarea id="answer" spellcheck="false" placeholder="Type the Cisco commands here..."></textarea>
           <div class="btn-row">
-            <button class="primary" id="checkBtn">Check</button>
-            <button class="secondary" id="hintBtn">Hint</button>
-            <button class="success" id="nextBtn">Next</button>
-            <button class="danger" id="resetBtn">Reset</button>
+            <button class="primary" id="checkBtn">Check Answer</button>
+            <button class="secondary" id="hintBtn">Show Hint</button>
+            <button class="success" id="nextBtn">Next Challenge</button>
           </div>
-
-          <div class="stats">
-            <div class="stat">
-              <div class="num" id="challengeNum">1</div>
-              <div>Challenge</div>
-            </div>
+          <div class="status" id="status">Start with Challenge 1 and type the commands in order.</div>
+          <div class="scoreboard">
             <div class="stat">
               <div class="num" id="correctCount">0</div>
               <div>Correct</div>
@@ -310,284 +315,127 @@
               <div class="num" id="attemptCount">0</div>
               <div>Attempts</div>
             </div>
-          </div>
-
-          <div class="status-box" id="statusBox">Type a command in the CLI window and press Enter.</div>
-
-          <div style="margin-top:16px;">
-            <div style="font-weight:700; margin-bottom:8px;">Quick reference</div>
-            <ul class="help">
-              <li><code>enable secret cisco</code> sets the admin password.</li>
-              <li><code>line con 0</code> opens console line settings.</li>
-              <li><code>password cisco</code> sets the line password.</li>
-              <li><code>login</code> enforces the password prompt.</li>
-              <li><code>line vty 0 4</code> opens Telnet line settings.</li>
-              <li><code>service password-encryption</code> encrypts line passwords.</li>
-              <li><code>end</code> returns to privileged mode.</li>
-              <li><code>wr</code> saves the running config.</li>
-            </ul>
-          </div>
-        </div>
-      </aside>
-
-      <main class="card">
-        <div class="card-head">CLI Simulator</div>
-        <div class="card-body">
-          <div class="terminal-wrap">
-            <div class="terminal-top">
-              <div class="window-dots">
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-              </div>
-              <div class="terminal-label">Cisco Router Command Line</div>
-            </div>
-
-            <div class="terminal">
-              <div class="screen" id="screen"></div>
-              <div class="input-bar">
-                <span class="prompt" id="livePrompt">Router&gt;</span>
-                <input class="cli-input" id="cliInput" type="text" autocomplete="off" spellcheck="false" />
-              </div>
+            <div class="stat">
+              <div class="num" id="challengeNum">1</div>
+              <div>Challenge</div>
             </div>
           </div>
         </div>
-      </main>
+      </section>
     </div>
+
+    <section class="card" style="margin-top:20px;">
+      <div class="card-head"><h2>Trainer Notes</h2></div>
+      <div class="card-body">
+        <ul class="help-list">
+          <li>Type one command per line, just like in Packet Tracer.</li>
+          <li>The checker accepts common shortcuts like <code>conf t</code> and <code>pass</code>.</li>
+          <li>The sequence matters because Cisco CLI follows command modes.</li>
+          <li>Use this page as a rehearsal deck before moving into your actual router lab.</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="footer-note">Built as a compact skills-enablement website for Cisco command practice.</div>
   </div>
 
   <script>
     const scenarios = [
       {
-        text: 'Challenge 1: Configure the enable secret password only. Use cisco as the password.',
-        required: ['enable', 'conf t', 'enable secret cisco']
+        text: 'Challenge 1: Add an enable secret password named cisco, then set the console password to cisco and make the router ask for it during console login.',
+        required: ['conf t', 'enable secret cisco', 'line con 0', 'password cisco', 'login']
       },
       {
-        text: 'Challenge 2: Configure the console password using cisco and make the router ask for it.',
-        required: ['enable', 'conf t', 'line con 0', 'password cisco', 'login']
+        text: 'Challenge 2: Configure only the Telnet lines so remote users must enter the password cisco.',
+        required: ['conf t', 'line vty 0 4', 'password cisco', 'login']
       },
       {
-        text: 'Challenge 3: Configure only the VTY lines with the password cisco and require login.',
-        required: ['enable', 'conf t', 'line vty 0 4', 'password cisco', 'login']
+        text: 'Challenge 3: Do the full password hardening flow: enable secret, console password, VTY password, encrypt passwords, and save.',
+        required: ['conf t', 'enable secret cisco', 'line con 0', 'password cisco', 'login', 'line vty 0 4', 'password cisco', 'login', 'service password-encryption', 'end', 'wr']
       },
       {
-        text: 'Challenge 4: Complete the full password sequence and save it.',
-        required: ['enable', 'conf t', 'enable secret cisco', 'line con 0', 'password cisco', 'login', 'line vty 0 4', 'password cisco', 'login', 'service password-encryption', 'end', 'wr']
+        text: 'Challenge 4: Your teacher wants you to use admin instead of cisco for console and VTY, but keep cisco as the enable secret. Add both and save.',
+        required: ['conf t', 'enable secret cisco', 'line con 0', 'password admin', 'login', 'line vty 0 4', 'password admin', 'login', 'end', 'wr']
       }
     ];
-
-    const screen = document.getElementById('screen');
-    const cliInput = document.getElementById('cliInput');
-    const livePrompt = document.getElementById('livePrompt');
-    const scenarioEl = document.getElementById('scenario');
-    const statusBox = document.getElementById('statusBox');
-    const challengeNumEl = document.getElementById('challengeNum');
-    const correctCountEl = document.getElementById('correctCount');
-    const attemptCountEl = document.getElementById('attemptCount');
 
     let current = 0;
     let correct = 0;
     let attempts = 0;
-    let mode = 'user';
-    let history = [];
-    let typedCommands = [];
-    let linePasswordPrompt = false;
 
-    function normalize(cmd) {
-      return cmd.trim().toLowerCase().replace(/\s+/g, ' ')
+    const scenarioEl = document.getElementById('scenario');
+    const answerEl = document.getElementById('answer');
+    const statusEl = document.getElementById('status');
+    const correctCountEl = document.getElementById('correctCount');
+    const attemptCountEl = document.getElementById('attemptCount');
+    const challengeNumEl = document.getElementById('challengeNum');
+
+    function normalize(line) {
+      return line
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, ' ')
         .replace(/^configure terminal$/, 'conf t')
         .replace(/^pass /, 'password ')
         .replace(/^write memory$/, 'wr');
     }
 
-    function getPrompt() {
-      if (mode === 'user') return 'Router>';
-      if (mode === 'privileged') return 'Router#';
-      if (mode === 'config') return 'Router(config)#';
-      if (mode === 'config-line') return 'Router(config-line)#';
-      return 'Router>';
-    }
-
-    function printLine(text = '') {
-      history.push(text);
-      renderScreen();
-    }
-
-    function renderScreen() {
-      screen.textContent = history.join('\n');
-      screen.scrollTop = screen.scrollHeight;
-      livePrompt.textContent = getPrompt();
-    }
-
-    function setStatus(message, kind = '') {
-      statusBox.className = 'status-box' + (kind ? ' ' + kind : '');
-      statusBox.innerHTML = message;
-    }
-
-    function bootScreen() {
-      history = [
-        'Cisco Internetwork Operating System Software',
-        'Router uptime is 2 minutes',
-        '',
-        'Press Enter to begin.'
-      ];
-      renderScreen();
-      setStatus('Type the required commands in the CLI window and press Enter after each one.');
-    }
-
-    function resetScenario() {
-      mode = 'user';
-      typedCommands = [];
-      linePasswordPrompt = false;
+    function loadScenario() {
       scenarioEl.textContent = scenarios[current].text;
       challengeNumEl.textContent = current + 1;
-      bootScreen();
-      cliInput.value = '';
-      cliInput.focus();
-    }
-
-    function isCommandAccepted(cmd) {
-      if (linePasswordPrompt) {
-        linePasswordPrompt = false;
-        printLine('Router(config-line)#');
-        return;
-      }
-
-      const raw = cmd;
-      const normalized = normalize(raw);
-      printLine(getPrompt() + raw);
-
-      if (!normalized) {
-        renderScreen();
-        return;
-      }
-
-      typedCommands.push(normalized);
-
-      if (normalized === 'enable' && mode === 'user') {
-        mode = 'privileged';
-        renderScreen();
-        return;
-      }
-
-      if (normalized === 'conf t' && mode === 'privileged') {
-        mode = 'config';
-        renderScreen();
-        return;
-      }
-
-      if (normalized === 'line con 0' && mode === 'config') {
-        mode = 'config-line';
-        renderScreen();
-        return;
-      }
-
-      if (normalized === 'line vty 0 4' && mode === 'config') {
-        mode = 'config-line';
-        renderScreen();
-        return;
-      }
-
-      if (normalized.startsWith('password ') && mode === 'config-line') {
-        renderScreen();
-        return;
-      }
-
-      if (normalized === 'login' && mode === 'config-line') {
-        renderScreen();
-        return;
-      }
-
-      if (normalized === 'enable secret cisco' && mode === 'config') {
-        renderScreen();
-        return;
-      }
-
-      if (normalized === 'service password-encryption' && mode === 'config') {
-        renderScreen();
-        return;
-      }
-
-      if (normalized === 'end' && (mode === 'config' || mode === 'config-line')) {
-        mode = 'privileged';
-        renderScreen();
-        return;
-      }
-
-      if (normalized === 'exit' && mode === 'config-line') {
-        mode = 'config';
-        renderScreen();
-        return;
-      }
-
-      if (normalized === 'exit' && mode === 'config') {
-        mode = 'privileged';
-        renderScreen();
-        return;
-      }
-
-      if (normalized === 'wr' && mode === 'privileged') {
-        printLine('Building configuration...');
-        printLine('[OK]');
-        renderScreen();
-        return;
-      }
-
-      printLine('% Invalid input detected at \"^\" marker.');
-      renderScreen();
+      answerEl.value = '';
+      statusEl.className = 'status';
+      statusEl.textContent = 'Enter the commands in order, then click Check Answer.';
     }
 
     function checkAnswer() {
       attempts++;
       attemptCountEl.textContent = attempts;
+
+      const inputLines = answerEl.value
+        .split('\n')
+        .map(normalize)
+        .filter(Boolean);
+
       const required = scenarios[current].required.map(normalize);
-      const entered = typedCommands.filter(Boolean);
 
-      const missing = required.filter(cmd => !entered.includes(cmd));
-      const orderOk = required.every((cmd, index) => entered[index] === cmd);
+      const missing = required.filter(cmd => !inputLines.includes(cmd));
+      const wrongOrder = required.some((cmd, idx) => inputLines[idx] !== cmd);
 
-      if (missing.length === 0 && orderOk) {
+      if (missing.length === 0 && !wrongOrder) {
         correct++;
         correctCountEl.textContent = correct;
-        setStatus('<strong>Correct.</strong> The command path is aligned with the CLI mode sequence.', 'good');
+        statusEl.className = 'status good';
+        statusEl.innerHTML = '<strong>Correct.</strong> The command stack is in the right order and aligned with Cisco mode transitions.';
       } else {
-        let message = '<strong>Not complete yet.</strong> ';
+        statusEl.className = 'status bad';
+        let msg = '<strong>Not quite yet.</strong> ';
         if (missing.length) {
-          message += 'Missing <code>' + missing.join('</code>, <code>') + '</code>. ';
+          msg += 'Missing: <code>' + missing.join('</code>, <code>') + '</code>. ';
         }
-        if (!orderOk) {
-          message += 'The command order still needs adjustment.';
+        if (wrongOrder) {
+          msg += 'Some commands are out of order.';
         }
-        setStatus(message, 'bad');
+        statusEl.innerHTML = msg;
       }
-      cliInput.focus();
     }
 
     function showHint() {
-      const required = scenarios[current].required;
-      setStatus('<strong>Hint:</strong> Start with <code>' + required[0] + '</code>. Then follow the prompt changes as you move from user mode to privileged mode and then into configuration mode.', 'warn');
-      cliInput.focus();
+      const s = scenarios[current];
+      statusEl.className = 'status';
+      statusEl.innerHTML = '<strong>Hint:</strong> Start with <code>' + s.required[0] + '</code> and follow the proper command mode flow. Total core commands in this challenge: <strong>' + s.required.length + '</strong>.';
     }
 
-    function nextScenario() {
+    function nextChallenge() {
       current = (current + 1) % scenarios.length;
-      resetScenario();
+      loadScenario();
     }
-
-    cliInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        const value = cliInput.value;
-        cliInput.value = '';
-        isCommandAccepted(value);
-      }
-    });
 
     document.getElementById('checkBtn').addEventListener('click', checkAnswer);
     document.getElementById('hintBtn').addEventListener('click', showHint);
-    document.getElementById('nextBtn').addEventListener('click', nextScenario);
-    document.getElementById('resetBtn').addEventListener('click', resetScenario);
+    document.getElementById('nextBtn').addEventListener('click', nextChallenge);
 
-    resetScenario();
+    loadScenario();
   </script>
 </body>
 </html>
